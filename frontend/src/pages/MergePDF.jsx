@@ -65,75 +65,88 @@ export default function MergePDF() {
     }
   }
 
-  return (
-    <section className="merge-page">
-      <div className="merge-container">
-        <span className="merge-label">PDF TOOL</span>
-        <h1>Merge PDF files</h1>
-        <p className="merge-description">
-          Combine multiple PDF files into one document in seconds.
-        </p>
+ 
+return (
+  <section className="merge-page">
+    <div className="merge-container">
+      <span className="merge-label">PDF TOOL</span>
 
-        <div className="merge-upload-box">
-          <div className="merge-icon">PDF</div>
-          <h2>Select your PDF files</h2>
-          <p>Choose at least two PDF files to combine.</p>
+      <h1>Merge PDF files</h1>
 
-          <label className="merge-select-button">
-            Select PDF files
-            <input
-              type="file"
-              accept=".pdf,application/pdf"
-              multiple
-              onChange={handleFilesChange}
-              hidden
-            />
-          </label>
-        </div>
+      <p className="merge-description">
+        Combine multiple PDF files into one document in seconds.
+      </p>
 
-        {error && <p className="merge-error">{error}</p>}
+      <div className="merge-upload-box">
+        <div className="merge-icon">PDF</div>
 
-        {files.length > 0 && (
-          <div className="merge-file-list">
-            <div className="merge-list-heading">
-              <h2>Selected files ({files.length})</h2>
+        <h2>Select your PDF files</h2>
+
+        <p>Choose at least two PDF files to combine.</p>
+
+        <label className="merge-select-button">
+          Select PDF files
+          <input
+            type="file"
+            accept=".pdf,application/pdf"
+            multiple
+            onChange={handleFilesChange}
+            hidden
+          />
+        </label>
+      </div>
+
+      {error && <p className="merge-error">{error}</p>}
+
+      {files.length > 0 && (
+        <div className="merge-file-list">
+          <div className="merge-list-heading">
+            <h2>Selected files ({files.length})</h2>
+
+            <button
+              className="merge-clear-button"
+              onClick={() => setFiles([])}
+              type="button"
+            >
+              Clear all
+            </button>
+          </div>
+
+          {files.map((file, index) => (
+            <div
+              className="merge-file-item"
+              key={`${file.name}-${index}`}
+            >
+              <span className="merge-file-icon">PDF</span>
+
+              <div className="merge-file-info">
+                <strong>{file.name}</strong>
+                <span>
+                  {(file.size / 1024).toFixed(1)} KB
+                </span>
+              </div>
+
               <button
-                className="merge-clear-button"
-                onClick={() => setFiles([])}
                 type="button"
+                className="merge-clear-button"
+                onClick={() => removeFile(index)}
               >
-                Clear all
+                Remove
               </button>
             </div>
+          ))}
 
-            {files.map((file, index) => (
-              <div className="merge-file-item" key={`${file.name}-${index}`}>
-                <span className="merge-file-icon">PDF</span>
-                <div className="merge-file-info">
-                  <strong>{file.name}</strong>
-                  <span>{(file.size / 1024).toFixed(1)} KB</span>
-                </div>
-            <button
+          <button
             className="merge-action-button"
             type="button"
             onClick={handleMerge}
-            disabled={loading || files.length < 2}>
+            disabled={loading || files.length < 2}
+          >
             {loading ? "Merging PDFs..." : "Merge PDFs"}
-            </button>
-              </div>
-            ))}
-
-            <button
-              className="merge-action-button"
-              type="button"
-              disabled
-              title="We will enable this after connecting the backend."
-            >
-              Merge PDFs — backend not connected yet
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
+          </button>
+        </div>
+      )}
+    </div>
+  </section>
+);
+          }
